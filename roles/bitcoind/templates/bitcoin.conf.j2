@@ -1,0 +1,17 @@
+
+datadir={{bitcoind_data_dir}}
+logdir={{bitcoind_log_dir}}
+
+disablewallet=1
+maxuploadtarget=4096
+dbcache=2048
+
+server=1
+rpcallowip=127.0.0.1
+rpcuser={{bitcoind_rpc_user}}
+rpcpassword={{bitcoind_rpc_pass}}
+
+zmqpubrawblock=tcp://127.0.0.1:28332
+zmqpubrawtx=tcp://127.0.0.1:28333
+
+txindex={{bitcoind_enable_txindex}}

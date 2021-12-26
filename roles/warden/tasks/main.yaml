@@ -1,0 +1,147 @@
+---
+
+- name: install system updates for ubuntu systems
+  apt: upgrade=dist update_cache=yes
+  when: ansible_distribution == "Ubuntu"
+
+
+# - name: install hexyl package
+#   become: yes
+#   action: >
+#     {{ ansible_pkg_mgr }} name={{item}} state=present update_cache=yes 
+#   with_items:
+#     # - python-pip
+#     - hexyl
+
+# - name: install hexyl package
+#   become: yes
+#   action: >
+#     {{ ansible_pkg_mgr }} name=hexyl state=present update_cache=yes 
+
+# - name: install libatlas-base-dev package
+#   become: yes
+#   action: >
+#     {{ ansible_pkg_mgr }} name=libatlas-base-dev state=present update_cache=yes 
+
+
+- name: Clone the warden repository 
+  git:
+    repo: "https://github.com/pxsocs/warden_terminal"
+    dest: "{{ install_path }}"
+    update: no
+    # owner: "pi"
+    # group: "pi"
+
+    # single_branch: yes
+    # version: master
+
+- name: Changing perm of "/foo/bar.sh", adding "+x"
+  file: dest="{{ install_path }}/static/save" mode=a+rw state=directory
+
+
+
+- name: configure warden
+  become: yes
+  template:
+    src: "config.ini.j2"
+    dest: "{{install_path}}/config.ini"
+    # owner: "{{lnd_user}}"
+    # group: "{{lnd_user}}"
+    mode: "0666"
+  # notify: restart lnd
+
+- name: Install specified python requirements
+  pip:
+    requirements: "{{install_path}}/requirements.txt"
+
+- name: configure warden run script
+  become: yes
+  template:
+    src: "warden_terminal.sh.j2"
+    dest: "/usr/local/bin/warden-terminal"
+    # owner: "{{lnd_user}}"
+    # group: "{{lnd_user}}"
+    mode: "0755"
+  # notify: restart lnd
+
+# - name: make sure everything is installed
+#   apt: name={{item}} state=installed
+#   with_items:
+#     - python-apt
+#     - python-pycurl
+#     - python-pip
+#     - python-setuptools
+
+# - name: Install pybitblock
+#   pip: 
+#     name: pipx
+
+
+# - name: add lnd user
+#   become: yes
+#   user: name="{{lnd_user}}" shell="/bin/false" system="yes"
+
+
+
+# - name: download lnd
+#   become: yes
+#   unarchive:
+#     remote_src: yes
+#     src: "{{item.url}}"
+#     dest: "/tmp"
+#     creates: "/tmp/{{item.tar_name}}/"
+#   loop:
+#     - url: "{{lnd_url}}"
+#       tar_name: "{{lnd_tar_name}}"
+#     - url: "{{lndconnect_url}}"
+#       tar_name: "{{lndconnect_tar_name}}"
+
+# - name: install lnd
+#   become: yes
+#   copy:
+#     src: "/tmp/{{item.tar}}/{{item.bin}}"
+#     dest: "/usr/local/bin/"
+#     remote_src: yes
+#     owner: "root"
+#     group: "root"
+#     mode: "0755"
+#   loop:
+#     - { tar: "{{lnd_tar_name}}", bin: "lnd" }
+#     - { tar: "{{lnd_tar_name}}", bin: "lncli" }
+#     - { tar: "{{lndconnect_tar_name}}", bin: "lndconnect" }
+#   notify: restart lnd
+
+# - name: create lnd data dir
+#   become: yes
+#   file:
+#     path: "{{item.path}}"
+#     state: "directory"
+#     owner: "{{lnd_user}}"
+#     group: "{{lnd_user}}"
+#     mode: "{{item.mode}}"
+#   loop:
+#     - { path: "{{lnd_data_dir}}", mode: "0750" }
+#     - { path: "{{lnd_log_dir}}", mode: "0750" }
+#     - { path: "{{lnd_conf_dir}}", mode: "0755" }
+
+# - name: configure lnd
+#   become: yes
+#   template:
+#     src: "lnd.conf.j2"
+#     dest: "{{lnd_conf_dir}}/lnd.conf"
+#     owner: "{{lnd_user}}"
+#     group: "{{lnd_user}}"
+#     mode: "0644"
+#   notify: restart lnd
+
+# - name: install lnd service
+#   become: yes
+#   template:
+#     src: "lnd.service.j2"
+#     dest: "/lib/systemd/system/lnd.service"
+#     mode: "0644"
+#   notify: restart lnd
+
+# - name: ensure lnd is started
+#   become: yes
+#   systemd: service="lnd.service" enabled="yes" state="started" daemon_reload="yes"

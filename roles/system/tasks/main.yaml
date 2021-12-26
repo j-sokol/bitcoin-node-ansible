@@ -1,0 +1,19 @@
+---
+
+# - name: Dispaly uuid & store in variable
+#   command: blkid -s UUID -o value {{ dev_data_drive }}
+#   register: uuid_swap
+
+# - name: Add the below lines
+#   blockinfile:
+#     path: /etc/fstab
+#     state: present
+#     block: |
+#       UUID={{ uuid_swap.stdout }}   {{ mount_path_data_drive }} ext4 defaults,rw,nofail 0 0
+- name: Mount up device by label
+  mount:
+    path: "{{ data_drive_mountpoint }}"
+    src: LABEL={{ data_drive_label }}
+    opts: defaults,rw,nofail
+    fstype: ext4
+    state: mounted

@@ -1,0 +1,13 @@
+
+
+
+[Unit]
+Description=btc-rpc-explorer
+
+[Service]
+Type=simple
+ExecStart=btc-rpc-explorer --port 8080 
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

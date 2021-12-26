@@ -1,0 +1,25 @@
+---
+
+# https://gist.github.com/alexbosworth/2c5e185aedbdac45a03655b709e255a3
+
+- name: install lnd-channel s3 backup apt packages
+  become: yes
+  apt: name="inotify-tools"
+
+- name: create lnd-channel s3 backup shell script
+  become: yes
+  copy:
+    src: "lnd-channel-s3-backup.sh"
+    dest: "/usr/local/bin/lnd-channel-s3-backup.sh"
+    mode: "0755"
+
+- name: configure lnd-channel s3 backup systemd service
+  become: yes
+  template:
+    src: "lnd-channel-s3-backup@.service.j2"
+    dest: "/lib/systemd/system/lnd-channel-s3-backup@{{lnd_channel_s3_backup_bucket}}.service"
+  notify: reload s3 backup service
+
+- name: ensure lnd-channel s3 backup service is started
+  become: yes
+  systemd: name="lnd-channel-s3-backup@{{lnd_channel_s3_backup_bucket}}.service" enabled="yes"

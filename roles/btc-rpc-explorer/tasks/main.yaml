@@ -1,0 +1,26 @@
+---
+
+
+
+
+- name: Install btc-rpc-explorer pkg
+  community.general.npm:
+    name: btc-rpc-explorer
+    global: yes
+
+
+- name: configure btc-rpc-explorer
+  template:
+    src: "btc-rpc-explorer.env.j2"
+    dest: "~/.config/btc-rpc-explorer.env"
+    mode: "0644"
+  # notify: restart btc-rpc-explorer
+
+
+# - name: install btc-rpc-explorer service
+#   become: yes
+#   template:
+#     src: "btc-rpc-explorer.service.j2"
+#     dest: "/lib/systemd/system/btc-rpc-explorer.service"
+#     mode: "0644"
+#   notify: restart btc-rpc-explorer

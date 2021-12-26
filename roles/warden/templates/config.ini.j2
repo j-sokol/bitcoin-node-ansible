@@ -1,0 +1,58 @@
+[MAIN]
+refresh = 5
+price_refresh_interval = 15
+welcome_sound = on
+welcome_text = “Good evening, Dave. Everything is running smoothly. And you?”
+large_text_font = standard
+hide_private_info = True
+sound = False
+auto_scroll = True
+message_widget = Running Bitcoin
+tty = /dev/tty
+output_to_monitor = True
+node_url = localhost
+auto_upgrade = False
+
+[PORTFOLIO]
+position_btc = 1.00
+
+[CURRENCIES]
+primary_fx = 'USD'
+fx_list = ['USD','EUR', 'CZK', 'TRY']
+
+[STOCKS]
+gbtc_enabled = off
+gbtc_shares = 0.000939303
+gbtc_shares_asof = 07-29-2021
+
+[ALERTS]
+ssh_alert = on
+
+[MEMPOOL]
+block_found_sound = on
+block_found_txt = 'Tick Tock. Next Block'
+url = http://localhost:3006/
+
+[QUOTES]
+url = https://raw.githubusercontent.com/NakamotoInstitute/nakamotoinstitute.org/0bf08c48cd21655c76e8db06da39d16036a88594/data/quotes.json
+
+[UMBREL]
+url = http://localhost/
+
+[BITCOIN_RPC]
+user = {{ bitcoind_rpc_user }}
+password = {{ bitcoind_rpc_pass}}
+ip_address = localhost
+port = 8332
+
+[SPECTER]
+specter_url = None
+specter_login = None
+specter_password = None
+specter_port = 25441
+
+[SERVER]
+host = 0.0.0.0
+port = 5000
+onion_server = False
+onion_port = 80

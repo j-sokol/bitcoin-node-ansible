@@ -1,0 +1,62 @@
+---
+
+- name: add bitcoind user
+  become: yes
+  user: name="{{bitcoind_user}}" shell="/bin/false" system="yes"
+
+- name: download bitcoind
+  become: yes
+  unarchive:
+    remote_src: yes
+    src: "{{ bitcoind_url }}"
+    dest: "/tmp"
+    creates: "/tmp/bitcoin-{{ bitcoind_version }}/"
+
+- name: install bitcoind
+  become: yes
+  copy:
+    src: "/tmp/bitcoin-{{ bitcoind_version }}/bin/{{ item }}"
+    dest: "/usr/local/bin/"
+    remote_src: yes
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  loop:
+    - "bitcoind"
+    - "bitcoin-cli"
+  notify: restart bitcoind
+
+- name: create bitcoind data dir
+  become: yes
+  file:
+    path: "{{item.path}}"
+    state: "directory"
+    owner: "{{bitcoind_user}}"
+    group: "{{bitcoind_user}}"
+    mode: "{{item.mode}}"
+  loop:
+    - { path: "{{bitcoind_data_dir}}", mode: "0750" }
+    - { path: "{{bitcoind_log_dir}}", mode: "0750" }
+    - { path: "{{bitcoind_conf_dir}}", mode: "0755" }
+
+- name: configure bitcoind
+  become: yes
+  template:
+    src: "bitcoin.conf.j2"
+    dest: "{{bitcoind_conf_dir}}/bitcoin.conf"
+    owner: "{{bitcoind_user}}"
+    group: "{{bitcoind_user}}"
+    mode: "0644"
+  notify: restart bitcoind
+
+- name: install bitcoind service
+  become: yes
+  template:
+    src: "bitcoind.service.j2"
+    dest: "/lib/systemd/system/bitcoind.service"
+    mode: "0644"
+  notify: restart bitcoind
+
+- name: ensure bitcoind is started
+  become: yes
+  systemd: service="bitcoind.service" enabled="yes" state="started" daemon_reload="yes"

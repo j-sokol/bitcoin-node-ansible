@@ -1,0 +1,16 @@
+[Unit]
+Description=bitcoind
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/bitcoind
+User={{ bitcoind_user }}
+
+PrivateTmp=true
+ProtectSystem=full
+NoNewPrivileges=true
+PrivateDevices=true
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=multi-user.target

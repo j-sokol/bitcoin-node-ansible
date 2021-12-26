@@ -1,0 +1,10 @@
+[Unit]
+Description=LND channel s3 backup for "%I"
+
+[Service]
+ExecStart=/usr/local/bin/lnd-channel-s3-backup.sh %i "{{lnd_channel_s3_backup}}"
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+# ---
+
+- name: restart btc-rpc-explorer
+  become: yes
+  systemd: service="btc-rpc-explorer.service" state="restarted" daemon_reload="yes"

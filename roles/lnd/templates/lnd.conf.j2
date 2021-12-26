@@ -1,0 +1,20 @@
+[Application Options]
+
+
+tor.active=1
+tor.v3=1
+listen=localhost
+
+datadir={{lnd_data_dir}}
+logdir={{lnd_log_dir}}
+
+alias={{lnd_alias}}
+; color=#3399FF
+
+tlsextradomain={{lnd_alias}}
+rpclisten=0.0.0.0:10009
+
+[Bitcoin]
+bitcoin.mainnet=true
+bitcoin.active=true
+bitcoin.node={{lnd_bitcoin_node}}
