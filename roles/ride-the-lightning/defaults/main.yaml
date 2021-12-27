@@ -1,0 +1,18 @@
+# ---
+
+# lnd_user: "{{node_user}}"
+# lnd_version: "v0.14.1-beta"
+# lnd_arch: "armv7"
+# lnd_tar_name: "lnd-linux-{{lnd_arch}}-{{lnd_version}}"
+# lnd_tar: "{{lnd_tar_name}}.tar.gz"
+# lnd_url: "https://github.com/lightningnetwork/lnd/releases/download/{{lnd_version}}/{{lnd_tar}}"
+# lnd_conf_dir: "/home/{{lnd_user}}/.lnd"
+
+# lndconnect_user: "{{node_user}}"
+# lndconnect_version: "v0.2.0"
+# lndconnect_tar_name: "lndconnect-linux-{{lnd_arch}}-{{lndconnect_version}}"
+# lndconnect_tar: "{{lndconnect_tar_name}}.tar.gz"
+# lndconnect_url: "https://github.com/LN-Zap/lndconnect/releases/download/{{lndconnect_version}}/{{lndconnect_tar}}"
+
+
+install_path: '/opt/ride-the-lightning'

@@ -1,9 +1,12 @@
 ---
 
-# https://gist.github.com/alexbosworth/2c5e185aedbdac45a03655b709e255a3
+- name: install jq package
+  become: yes
+  action: >
+    {{ ansible_pkg_mgr }} name=jq state=present update_cache=yes 
 
 
-- name: create lnd-channel s3 backup shell script
+- name: install get_status script
   become: yes
   copy:
     src: "get_status.sh"

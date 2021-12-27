@@ -1,0 +1,15 @@
+
+
+
+[Unit]
+Description=mempool-frontend
+
+[Service]
+Type=simple
+User=node
+ExecStart=/usr/bin/node {{ install_path }}/src/cli.js serve
+WorkingDirectory={{ install_path }}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

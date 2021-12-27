@@ -1,0 +1,14 @@
+
+
+
+[Unit]
+Description=mempool-backend
+
+[Service]
+Type=simple
+ExecStart=npm run start
+WorkingDirectory={{ install_path }}/backend/
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

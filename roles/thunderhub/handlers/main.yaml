@@ -1,0 +1,5 @@
+# ---
+
+- name: restart mempool-backend
+  become: yes
+  systemd: service="mempool-backend.service" state="restarted" daemon_reload="yes"

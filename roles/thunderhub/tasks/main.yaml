@@ -1,0 +1,147 @@
+---
+
+# - name: install system updates for ubuntu systems
+#   apt: upgrade=dist update_cache=yes
+#   when: ansible_distribution == "Ubuntu"
+
+# - name: Install pymysql
+#   pip: 
+#     name: pymysql
+#     executable: pip3
+
+
+# - name: install npm package
+#   become: yes
+#   action: >
+#     {{ ansible_pkg_mgr }} name=npm state=present update_cache=yes 
+
+
+# - name: add node user
+#   become: yes
+#   user: name="node" shell="/bin/false" system="yes"  groups=sudo,gpio append=yes
+
+
+
+- name: Clone the thunderhub repository 
+  git:
+    repo: "git clone https://github.com/apotdevin/thunderhub.git"
+    dest: "{{ install_path }}"
+    update: no
+    version: v2.2.2
+  become: yes
+#   # become_user: node
+
+
+- name: Install backend pkgs
+  community.general.npm:
+    path: "{{ install_path }}/"
+    production: yes
+
+- name: npm build
+  command: npm run build
+  args:
+    chdir: "{{ install_path }}/"
+
+# - name: Create and start services
+#   community.docker.docker_compose:
+#     project_src: "{{ install_path }}/docker"
+#   register: output
+
+# - ansible.builtin.debug:
+#     var: output
+
+
+# - include_role:
+#     name: ansible-role-mariadb
+#   vars: 
+#     mariadb_datadir: "{{ mariadb_datadir }}"
+#     mariadb_users:
+#       - name: mempool
+#         host: localhost
+#         password: mempool
+#         priv: '*.*:ALL'
+#     mariadb_databases:
+#       - name: mempool
+
+#     # become: yes
+
+# - name: load maria structure
+#   shell: mysql -umempool -pmempool mempool < mariadb-structure.sql
+#   args:
+#     chdir: "{{ install_path }}/"
+#   ignore_errors: yes
+
+  
+
+
+
+# - name: Install backend pkgs
+#   community.general.npm:
+#     path: "{{ install_path }}/backend/"
+#     production: yes
+#   # become: yes
+#   # become_user: node
+
+# - name: npm build
+#   command: npm run build
+#   args:
+#     chdir: "{{ install_path }}/backend/"
+
+
+# - name: configure mempool-backend
+#   become: yes
+#   template:
+#     src: "mempool-backend-config.json.j2"
+#     dest: "{{install_path}}/backend/mempool-config.json"
+#     # owner: "{{lnd_user}}"
+#     # group: "{{lnd_user}}"
+#     mode: "0644"
+#   notify: restart mempool-backend
+
+
+
+# - name: install backend service
+#   become: yes
+#   template:
+#     src: "mempool-backend.service.j2"
+#     dest: "/lib/systemd/system/mempool-backend.service"
+#     mode: "0644"
+#   notify: restart mempool-backend
+
+# - name: ensure mempool-backend is started
+#   become: yes
+#   systemd: service="mempool-backend.service" enabled="yes" state="started" daemon_reload="yes"
+
+
+
+
+# # - name: Install frontend pkgs
+# #   community.general.npm:
+# #     path: "{{ install_path }}/frontend/"
+# #     production: yes
+# #   become: yes
+# #   # become_user: node
+
+# # - include_role:
+# #     name: ansible-role-nginx
+
+
+# - name: copy frontend
+#   ansible.builtin.copy:
+#     src: "{{ install_path }}/frontend/dist/mempool/"
+#     dest: /var/www/
+#     remote_src: yes
+
+
+# - name: configure mempool-frontend
+#   become: yes
+#   template:
+#     src: "mempool-frontend-config.json.j2"
+#     dest: "{{install_path}}/frontend/mempool-frontend-config.json"
+#     # owner: "{{lnd_user}}"
+#     # group: "{{lnd_user}}"
+#     mode: "0644"
+#   notify: restart mempool-frontend
+
+
+
