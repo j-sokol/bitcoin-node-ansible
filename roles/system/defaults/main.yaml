@@ -1,8 +1,2 @@
 ---
 
-bitcoind_user: "bitcoin"
-bitcoind_version: "22.0"
-bitcoind_arch: "{{ ansible_architecture }}"
-bitcoind_url: "https://bitcoin.org/bin/bitcoin-core-{{bitcoind_version}}/bitcoin-{{bitcoind_version}}-{{bitcoind_arch}}-linux-gnu.tar.gz"
-bitcoind_conf_dir: "/home/{{ bitcoind_user }}/.bitcoin"
-bitcoind_enable_txindex: "1"

@@ -10,7 +10,7 @@
 #     state: present
 #     block: |
 #       UUID={{ uuid_swap.stdout }}   {{ mount_path_data_drive }} ext4 defaults,rw,nofail 0 0
-- name: Mount up device by label
+- name: Mount up data drive by label
   mount:
     path: "{{ data_drive_mountpoint }}"
     src: LABEL={{ data_drive_label }}

@@ -8,8 +8,8 @@
 
 - name: install get_status script
   become: yes
-  copy:
-    src: "get_status.sh"
+  template:
+    src: "get_status.sh.j2"
     dest: "/usr/local/bin/get_status.sh"
     mode: "0755"
 

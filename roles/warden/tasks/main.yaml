@@ -24,7 +24,7 @@
 #     {{ ansible_pkg_mgr }} name=libatlas-base-dev state=present update_cache=yes 
 
 
-- name: Clone the warden repository 
+- name: clone the warden repository 
   git:
     repo: "https://github.com/pxsocs/warden_terminal"
     dest: "{{ install_path }}"
@@ -35,7 +35,7 @@
     # single_branch: yes
     # version: master
 
-- name: Changing perm of "/foo/bar.sh", adding "+x"
+- name: allow writes for all in settings dir
   file: dest="{{ install_path }}/static/save" mode=a+rw state=directory
 
 
