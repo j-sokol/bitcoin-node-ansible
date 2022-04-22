@@ -1,0 +1,5 @@
+---
+
+- name: reload telegram notify service
+  systemd: name="telegram-notify.service" enabled="yes" daemon_reload="yes"
+  become: yes

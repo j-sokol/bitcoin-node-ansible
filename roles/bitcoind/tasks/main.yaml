@@ -34,10 +34,25 @@
     owner: "{{bitcoind_user}}"
     group: "{{bitcoind_user}}"
     mode: "{{item.mode}}"
+    recurse: yes
   loop:
+    - { path: "{{bitcoind_data_drive_mountpoint}}", mode: "0750"}
     - { path: "{{bitcoind_data_dir}}", mode: "0750" }
     - { path: "{{bitcoind_log_dir}}", mode: "0750" }
     - { path: "{{bitcoind_conf_dir}}", mode: "0755" }
+
+# - name: Recursively change ownership of a data directory (af there is already something)
+#   ansible.builtin.file:
+#     path: /etc/foo
+#     state: directory
+#     recurse: yes
+#     owner: foo
+#     group: foo
+#   loop:
+#     - { path: "{{bitcoind_data_dir}}", mode: "0750" }
+#     - { path: "{{bitcoind_log_dir}}", mode: "0750" }
+#     - { path: "{{bitcoind_conf_dir}}", mode: "0755" }
+
 
 - name: configure bitcoind
   become: yes

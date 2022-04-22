@@ -3,3 +3,7 @@
 - name: restart bitcoind
   become: yes
   systemd: service="bitcoind.service" state="restarted" daemon_reload="yes"
+
+- name: restart machine
+  become: yes
+  systemd: service="bitcoind.service" state="restarted" daemon_reload="yes"

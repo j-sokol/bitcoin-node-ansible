@@ -17,3 +17,41 @@
     opts: defaults,rw,nofail
     fstype: ext4
     state: mounted
+
+
+- name: install network-manager package
+  become: yes
+  action: >
+    {{ ansible_pkg_mgr }} name=network-manager state=present update_cache=yes 
+
+- name: install network-manager-gnome package
+  become: yes
+  action: >
+    {{ ansible_pkg_mgr }} name=network-manager-gnome state=present update_cache=yes 
+
+- name: Configure dhcpcd to ignore wlan0
+  blockinfile:
+    path: /etc/dhcpcd.conf
+    state: present
+    block: |
+      denyinterfaces wlan0
+
+# - name: Restart service dhcpcd
+#   ansible.builtin.service:
+#     name: dhcpcd
+#     state: restarted
+
+- name: Configure Network Manager to control wlan0 and assume dhcp duties
+  blockinfile:
+    path: /etc/NetworkManager/NetworkManager.conf
+    state: present
+    block: |
+      [main]
+      plugins=ifupdown,keyfile
+      dhcp=internal
+
+      [ifupdown]
+      managed=true
+
+# - name: Unconditionally reboot the machine with all defaults
+#   reboot:

@@ -21,3 +21,12 @@ mkfs.ext4 /dev/sdb1
 sudo mkfs.ext4 /dev/sdb1
 sudo e2label /dev/sdb1 bitcoin
 ```
+
+```
+sudo apt-get update
+sudo apt-get install ansible
+
+
+ansible-galaxy install -r requirements.yaml
+ansible-playbook all-playbook.yaml
+```

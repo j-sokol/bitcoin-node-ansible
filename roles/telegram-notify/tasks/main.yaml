@@ -1,0 +1,25 @@
+---
+
+# https://gist.github.com/alexbosworth/2c5e185aedbdac45a03655b709e255a3
+
+# - name: install telegram-notify backup apt packages
+#   become: yes
+#   apt: name="inotify-tools"
+
+- name: create telegram-notify backup shell script
+  become: yes
+  copy:
+    src: "telegram-notify.sh"
+    dest: "/usr/local/bin/telegram-notify.sh"
+    mode: "0755"
+
+- name: configure telegram-notify backup systemd service
+  become: yes
+  template:
+    src: "telegram-notify.service.j2"
+    dest: "/lib/systemd/system/telegram-notify.service"
+  notify: reload telegram notify service
+
+- name: ensure telegram-notify backup service is started
+  become: yes
+  systemd: name="telegram-notify.service" enabled="yes"

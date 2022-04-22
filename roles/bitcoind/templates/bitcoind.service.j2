@@ -5,7 +5,8 @@ After=network.target
 [Service]
 ExecStart=/usr/local/bin/bitcoind
 User={{bitcoind_user}}
-
+Restart=on-failure
+RestartSec=5snmt
 PrivateTmp=true
 ProtectSystem=full
 NoNewPrivileges=true
