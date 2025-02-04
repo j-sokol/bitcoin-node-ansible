@@ -1,0 +1,61 @@
+---
+- hosts: localhost
+  vars:
+    node_user: lnd
+    lnd_alias: '1337-node'
+    lnd_bitcoin_node: bitcoind
+    bitcoin_rpc_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters') }}"
+    data_drive_label: bitcoin
+    data_drive_mountpoint: /mnt/bitcoin
+    bitcoind_rpc_pass: "{{ bitcoin_rpc_password }}"
+    bitcoind_rpc_user: "bitcoinuser"
+    bitcoind_data_dir: "{{ data_drive_mountpoint }}/bitcoin/data"
+
+
+  roles:
+   # - role: system
+   #   become: yes
+    # - role: ansible-role-tor
+    #   become: yes
+#    - role: bitcoind
+#      bitcoind_version: 22.0
+#      bitcoind_arch: aarch64
+#      bitcoind_data_drive_mountpoint: "{{data_drive_mountpoint}}"
+#      bitcoind_data_dir: "{{ data_drive_mountpoint }}/bitcoin/data"
+#      bitcoind_log_dir:  "{{ data_drive_mountpoint }}/bitcoin/logs"
+    - role: bitcoin-status-scripts
+    - role: telegram-notify
+      telegram_token: "***"
+    # # - role: pyblock
+    # - role: warden
+    #   become: yes
+    # - role: system
+      # become: yes
+    # - role: bitcoind
+    #   bitcoind_version: 22.0
+    #   bitcoind_arch: aarch64
+    #   bitcoind_data_dir: "{{ data_drive_mountpoint }}/bitcoin/data"
+    #   bitcoind_log_dir:  "{{ data_drive_mountpoint }}/bitcoin/logs"
+
+    # - role: lnd
+    #   lnd_data_dir: '{{ data_drive_mountpoint }}/lnd'
+    #   lnd_log_dir: '{{ data_drive_mountpoint }}/lnd/logs/'
+
+    # - role: geerlingguy.nodejs
+    #   become: yes
+    # - role: geerlingguy.nginx
+    #   become: yes
+    # - role: geerlingguy.pip
+    #   become: yes
+    # - role: btc-rpc-explorer
+    # - role: bitcoin-status-scripts
+      # become: yes
+
+    # - role: geerlingguy.docker_arm
+      # docker_install_compose: true
+      # docker_pip_executable: pip3
+      # become: yes
+    # - role: mempool-space
+    #   mariadb_datadir: "{{ data_drive_mountpoint }}/mysql"
+    #   become: yes
+
